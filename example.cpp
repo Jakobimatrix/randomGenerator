@@ -21,25 +21,28 @@ int main() {
 
 
   constexpr int NUM_VALS = 10;
-  constexpr int NUM_EXPERIMENTS = 1000;
+  constexpr int NUM_EXPERIMENTS = 10000;
 
   std::array<int, NUM_VALS> num_count;
-  for (int i = 0; i < NUM_VALS; i++) {
+  for (std::size_t i = 0; i < NUM_VALS; i++) {
     num_count[i] = 0;
   }
 
-  tool::UniformDistribution<int> ud(0, NUM_VALS);
+  tool::UniformDistribution<int> ud(0, NUM_VALS - 1);
   for (int i = 0; i < NUM_EXPERIMENTS; i++) {
-    int random_number = ud.get();
+    size_t random_number = static_cast<size_t>(ud.get());
     num_count[random_number]++;
   }
 
-  for (int& v : num_count) {
-    const unsigned int num_ticks = v / (0.01 * NUM_EXPERIMENTS);
+  for (const int& v : num_count) {
+    const int num_ticks = v / static_cast<int>(0.01 * NUM_EXPERIMENTS);
     std::cout << "|";
     for (int j = 0; j < num_ticks; j++) {
       std::cout << "#";
     }
     std::cout << v << std::endl;
   }
+
+
+  return 0;
 }
