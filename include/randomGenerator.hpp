@@ -1,3 +1,6 @@
+#ifndef RANDOM_GENERATOR
+#define RANDOM_GENERATOR
+
 #include <cassert>
 #include <random>
 #include <type_traits>
@@ -192,3 +195,5 @@ class NormalDistribution {
   T var;
 };
 }  // namespace tool
+
+#endif
