@@ -6,8 +6,7 @@
 
 int main() {
 
-  tool::RandomGenerator* rg;
-  rg = &rg->getInstance();
+  auto rg = RandomGenerator::getInstance();
 
   // *********** distributions ***********
 
