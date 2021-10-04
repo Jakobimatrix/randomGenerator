@@ -4,6 +4,7 @@
 #include <cassert>
 #include <random>
 #include <type_traits>
+#include <memory>
 
 namespace tool {
 
@@ -32,10 +33,11 @@ class RandomGenerator {
  public:
   /*!
    * \brief private Get the one instance ot the class
-   * \return A reference to the one existing instance of this class.
+   * \return A shared pointer to the only existing instance of this class.
    */
-  static RandomGenerator& getInstance() {
-    static RandomGenerator instance;
+  static std::shared_ptr<RandomGenerator> getInstance() {
+    static std::shared_ptr<RandomGenerator> instance(new RandomGenerator);
+
     return instance;
   }
 
@@ -149,7 +151,7 @@ class UniformDistribution {
    * \param max the right bound of the uniform distribution.
    */
   UniformDistribution(T min, T max) : min(min), max(max) {
-    rg = &rg->getInstance();
+    rg = rg->getInstance();
   }
 
   /*!
@@ -158,7 +160,7 @@ class UniformDistribution {
    */
   T get() const { return rg->uniformDistribution<T>(min, max); }
 
-  RandomGenerator* rg;
+  std::shared_ptr<RandomGenerator> rg;
   T min;
   T max;
 };
@@ -181,7 +183,7 @@ class NormalDistribution {
    * \param var The second central moment of the distribution
    */
   NormalDistribution(T mean, T var) : mean(mean), var(var) {
-    rg = &rg->getInstance();
+    rg = rg->getInstance();
   };
 
 
@@ -190,7 +192,7 @@ class NormalDistribution {
    * \return a value between min and max.
    */
   T get() const { return rg->normalDistribution(mean, var); }
-  RandomGenerator* rg;
+  std::shared_ptr<RandomGenerator> rg;
   T mean;
   T var;
 };
